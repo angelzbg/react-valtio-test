@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import useSnapshots from "./valtio/store";
+import routerProxy from "./valtio/mockRouter";
+import Funds from "./Funds";
+import CreateFund from "./CreateFund";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    const { routerSnap } = useSnapshots();
+    return (
+        <div className="App">
+            <div>
+                {Object.values(routerSnap.pages).map((page) => (
+                    <button key={page} onClick={() => (routerProxy.page = page)}>
+                        {page}
+                    </button>
+                ))}
+            </div>
+            <div>Current page: {routerSnap.page}</div>
+            {routerSnap.page === routerProxy.pages.funds && <Funds />}
+            {routerSnap.page === routerProxy.pages.createFund && <CreateFund />}
+        </div>
+    );
+};
 
 export default App;
